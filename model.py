@@ -123,22 +123,18 @@ class Delegate(QtWidgets.QStyledItemDelegate):
         
     def paint(self, painter, option, index):
         data = index.model().data(index)
-        
+
         if type(data) is QtGui.QPixmap:
-            # cell size
-            r = option.rect
-            x, y, w, h = r.x(), r.y(), r.width(), r.height()
-            # image size
-            w2, h2 = data.size().width(), data.size().height()
-            # aspect rasio
-            r1, r2 = w / h, w2 / h2
-            if r1 < r2:
-                h = w / r2
-            else:
-                w = h * r2
             
-            pixmap2 = data.scaled(w, h, QtCore.Qt.KeepAspectRatio)
-            rect = QtCore.QRect(x, y, w, h)
-            painter.drawPixmap(rect, pixmap2)
-        
+            if option.rect.width() / option.rect.height() < data.size().width() / data.size().height():
+                scaled = data.scaledToWidth( option.rect.width() )
+            else:
+                scaled = data.scaledToHeight( option.rect.height() )
+            
+            painter.drawPixmap( 
+                option.rect.x(), option.rect.y(), 
+                scaled.size().width(), scaled.size().height(),
+                scaled 
+            )
+
         super(Delegate, self).paint(painter, option, index)

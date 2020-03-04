@@ -17,7 +17,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.tableView.setModel(self.model)
         self.ui.tableView.setItemDelegate(Delegate())
 
-        for filename in ['green.png', 'blue.png', 'yellow.png']:
+        for filename in ['_green.png', '_blue.png', '_yellow.png', '_orange.png', '_gray.png']:
             self.model.insertRows(self.model.rowCount(), 1)
             item = self.model.root_item.children()[-1]
             pixmap = QtGui.QPixmap(filename)
